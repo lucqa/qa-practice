@@ -1,0 +1,25 @@
+{
+  "name": "qa-practice",
+  "version": "1.0.0",
+  "description": "Automation practice with Playwright in qa-practice.netlify.app",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucqa/qa-practice.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lucqa/qa-practice/issues"
+  },
+  "homepage": "https://github.com/lucqa/qa-practice#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@types/node": "^22.15.15"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0"
+  }
+}
