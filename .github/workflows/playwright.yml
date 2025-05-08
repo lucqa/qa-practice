@@ -9,6 +9,11 @@ jobs:
     timeout-minutes: 60
     runs-on: windows-latest
     steps:
+    - name: Declaring environment variables
+      env:
+        BASE_URL: ${{ vars.BASE_URL }}
+        CREDENCIAL_EMAIL: ${{ secrets.CREDENCIAL_EMAIL }}
+        CREDENCIAL_PASSWORD: ${{ secrets.CREDENCIAL_PASSWORD }}
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
       with:
