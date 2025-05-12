@@ -1,15 +1,16 @@
-import { test, expect } from "@playwright/test"
+import { test, expect } from "my-test"
 import { AuthEcommerce } from "@Pages/auth-ecommerce"
 
 test.describe("Basic Authentication Tests", () => {
 
-    test("Accessing Page and Verify Elements", async ({ page }) => {
-
-        // Calling Resources
-        const authEcommerce: AuthEcommerce = new AuthEcommerce(page)
+    test.beforeEach('Precondition: Call E-commerce endpoint', async ({ page }) => {
 
         // Loading Page
         await page.goto('auth_ecommerce')
+
+    })
+
+    test("Accessing Page and Verify Elements", async ({ authEcommerce, page }) => {
 
         // Assertion URL ends wit 'auth_ecommerce'
         await expect(page).toHaveURL(/auth_ecommerce$/)
@@ -31,23 +32,14 @@ test.describe("Basic Authentication Tests", () => {
 
     })
 
-    test('Authentication Attempt with Valid Credentials', async ({ page }) => {
-
-        // Calling Resources
-        const authEcommerce: AuthEcommerce = new AuthEcommerce(page)
+    test('Authentication Attempt with Valid Credentials', async ({ authEcommerce }) => {
 
         // Calling Test Data
         const email = process.env.CREDENCIAL_EMAIL as string
         const password = process.env.CREDENCIAL_PASSWORD as string
 
-        // Loading Page
-        await page.goto('auth_ecommerce')
-
         // Filling Login Form
-        await authEcommerce.LoginForm(email, password)
-
-        // Click Submit Button
-        await authEcommerce.buttonSubmit.click()
+        await authEcommerce.SubmitLoginForm(email, password)
 
         // Assertion Logout link is displayed
         await expect(authEcommerce.linkLogout).toBeVisible()
@@ -57,22 +49,13 @@ test.describe("Basic Authentication Tests", () => {
 
     })
 
-    test('Authentication Attempt with Invalid Email', async ({ page }) => {
-
-        // Calling Resources
-        const authEcommerce: AuthEcommerce = new AuthEcommerce(page)
+    test('Authentication Attempt with Invalid Email', async ({ authEcommerce }) => {
 
         // Calling Test Data
         const password = process.env.CREDENCIAL_PASSWORD as string
 
-        // Loading Page
-        await page.goto('auth_ecommerce')
-
         // Filling Login Form
-        await authEcommerce.LoginForm('123@123.com', password)
-
-        // Click Submit Button
-        await authEcommerce.buttonSubmit.click()
+        await authEcommerce.SubmitLoginForm('123@123.com', password)
 
         // Assertion Logout link is NOT displayed
         await expect(authEcommerce.linkLogout).not.toBeVisible()
@@ -85,22 +68,13 @@ test.describe("Basic Authentication Tests", () => {
 
     })
 
-    test('Authentication Attempt with Invalid Password', async ({ page }) => {
-
-        // Calling Resources
-        const authEcommerce: AuthEcommerce = new AuthEcommerce(page)
+    test('Authentication Attempt with Invalid Password', async ({ authEcommerce }) => {
 
         // Calling Test Data
         const email = process.env.CREDENCIAL_EMAIL as string
 
-        // Loading Page
-        await page.goto('auth_ecommerce')
-
         // Filling Login Form
-        await authEcommerce.LoginForm(email, '1234567890')
-
-        // Click Submit Button
-        await authEcommerce.buttonSubmit.click()
+        await authEcommerce.SubmitLoginForm(email, '1234567890')
 
         // Assertion Logout link is NOT displayed
         await expect(authEcommerce.linkLogout).not.toBeVisible()
@@ -113,19 +87,10 @@ test.describe("Basic Authentication Tests", () => {
 
     })
 
-    test('Authentication Attempt Without Credentials', async ({ page }) => {
-
-        // Calling Resources
-        const authEcommerce: AuthEcommerce = new AuthEcommerce(page)
-
-        // Loading Page
-        await page.goto('auth_ecommerce')
+    test('Authentication Attempt Without Credentials', async ({ authEcommerce }) => {
 
         // Filling Login Form
-        await authEcommerce.LoginForm('', '')
-
-        // Click Submit Button
-        await authEcommerce.buttonSubmit.click()
+        await authEcommerce.SubmitLoginForm('', '')
 
         // Assertion Logout link is NOT displayed
         await expect(authEcommerce.linkLogout).not.toBeVisible()
@@ -142,13 +107,15 @@ test.describe("Basic Authentication Tests", () => {
 
 test.describe("Basic Ecommerce Tests", () => {
 
-    test('Add an item to cart', async ({ page }) => {
-
-        // Calling Resources
-        const authEcommerce: AuthEcommerce = new AuthEcommerce(page)
+    
+    test.beforeEach('Precondition: User must be logged', async ({ authEcommerce }) => {
 
         // Calling Page and Logging In
         await authEcommerce.CallPageAndLogin()
+
+    })
+
+    test('Add an item to cart', async ({ authEcommerce }) => {
 
         // Storing first products Data to later assertion
         const productName_0 = await authEcommerce.nameAnyProduct.nth(0).textContent() // Name

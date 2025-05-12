@@ -52,19 +52,22 @@ export class AuthEcommerce {
         this.priceAnyProduct = page.locator('//*[@class="shop-item-price"]')
         // Any Products price to use with nth 0-4
 
-        this.buttonAddToCartAnyProduct = page.getByRole('button', { name: 'ADD TO CART'})
+        this.buttonAddToCartAnyProduct = page.getByRole('button', { name: 'ADD TO CART' })
         // Any Products Addto Cart button to use with nth 0-4
 
         this.srcAnyProduct = page.locator('//*[@class="shop-item-image"]')
     }
 
-    async LoginForm(email: string, password: string) {
+    async SubmitLoginForm(email: string, password: string) {
 
         // Fill in email
         await this.inputEmail.fill(email)
 
         // Fill in password
         await this.inputPassword.fill(password)
+
+        // Click Submit Button
+        await this.buttonSubmit.click()
 
     }
 
@@ -78,10 +81,7 @@ export class AuthEcommerce {
         await this.page.goto('auth_ecommerce')
 
         // Calling LoginForm
-        await this.LoginForm(email, password)
-
-        // Click Submit Button
-        await this.buttonSubmit.click()
+        await this.SubmitLoginForm(email, password)
 
     }
 }
