@@ -1,5 +1,4 @@
 import { test, expect } from "my-test"
-import { AuthEcommerce } from "@Pages/auth-ecommerce"
 
 test.describe("Basic Authentication Tests", () => {
 
@@ -10,7 +9,7 @@ test.describe("Basic Authentication Tests", () => {
 
     })
 
-    test("Accessing Page and Verify Elements", async ({ authEcommerce, page }) => {
+    test("Access Login Page and Verify Elements", async ({ authEcommerce, page }) => {
 
         // Assertion URL ends wit 'auth_ecommerce'
         await expect(page).toHaveURL(/auth_ecommerce$/)
@@ -32,7 +31,7 @@ test.describe("Basic Authentication Tests", () => {
 
     })
 
-    test('Authentication Attempt with Valid Credentials', async ({ authEcommerce }) => {
+    test('Authenticate with Valid Credentials', async ({ authEcommerce }) => {
 
         // Calling Test Data
         const email = process.env.CREDENCIAL_EMAIL as string
@@ -47,9 +46,18 @@ test.describe("Basic Authentication Tests", () => {
         // Assertion Logout link contains the text Log Out
         await expect(authEcommerce.linkLogout).toContainText('Log Out')
 
+        // Assertion Header Title
+        await expect(authEcommerce.titleHeaderCart).toContainText('ITEM')
+
+        // Assertion Header Price
+        await expect(authEcommerce.priceHeaderCart).toContainText('PRICE')
+
+        // Assertion Header Quantity
+        await expect(authEcommerce.quantityHeaderCart).toContainText('QUANTITY')
+
     })
 
-    test('Authentication Attempt with Invalid Email', async ({ authEcommerce }) => {
+    test('Authenticate with Invalid Email', async ({ authEcommerce }) => {
 
         // Calling Test Data
         const password = process.env.CREDENCIAL_PASSWORD as string
@@ -68,7 +76,7 @@ test.describe("Basic Authentication Tests", () => {
 
     })
 
-    test('Authentication Attempt with Invalid Password', async ({ authEcommerce }) => {
+    test('Authenticate with Invalid Password', async ({ authEcommerce }) => {
 
         // Calling Test Data
         const email = process.env.CREDENCIAL_EMAIL as string
@@ -87,7 +95,7 @@ test.describe("Basic Authentication Tests", () => {
 
     })
 
-    test('Authentication Attempt Without Credentials', async ({ authEcommerce }) => {
+    test('Authenticate Without Credentials', async ({ authEcommerce }) => {
 
         // Filling Login Form
         await authEcommerce.SubmitLoginForm('', '')
@@ -107,7 +115,7 @@ test.describe("Basic Authentication Tests", () => {
 
 test.describe("Basic Ecommerce Tests", () => {
 
-    
+
     test.beforeEach('Precondition: User must be logged', async ({ authEcommerce }) => {
 
         // Calling Page and Logging In
@@ -115,19 +123,36 @@ test.describe("Basic Ecommerce Tests", () => {
 
     })
 
-    test('Add an item to cart', async ({ authEcommerce }) => {
+    test('Add an Item and Verify Shopping Cart', async ({ authEcommerce }) => {
 
         // Storing first products Data to later assertion
-        const productName_0 = await authEcommerce.nameAnyProduct.nth(0).textContent() // Name
-        const productPrice_0 = await authEcommerce.priceAnyProduct.nth(0).textContent() // Price
-        const productSrc_0 = await authEcommerce.srcAnyProduct.nth(0).getAttribute('src') // thumbnail
+        const productNameClicked = await authEcommerce.nameAnyProduct.nth(0).textContent() // Name
+        const productPriceClicked = await authEcommerce.priceAnyProduct.nth(0).textContent() // Price
+        const productSrcClicked = await authEcommerce.srcAnyProduct.nth(0).getAttribute('src') // thumbnail
 
-        // Adding first product to cart
+        // Adding first product to cart (nth=0)
         await authEcommerce.buttonAddToCartAnyProduct.nth(0).click()
 
+        // Verifying if Shopping Cart row was created (0=Header, Product>=1)
+        await expect(authEcommerce.containerAnyRowCartItem.nth(1)).toBeVisible()
+
+        // Storing Data from products nth=0
+        const productNameAdded = await authEcommerce.nameAnyCartItem.nth(0).textContent() // Name
+        const productPriceAdded = await authEcommerce.priceAnyCartItem.nth(0).textContent() // Price
+        const productSrcAdded = await authEcommerce.srcAnyCartItem.nth(0).getAttribute('src') // Thumbnail src
+        const productQuantityAdded = await authEcommerce.inputQuantityAnyCartItem.nth(0).inputValue() // Quantity
+
+        // Expect Remove button to be displayed
+        await expect(authEcommerce.buttonRemoveAnyCartItem).toBeVisible()
+
+        // Expect Quantity to be 1
+        expect(productQuantityAdded).toBe('1')
+
+        // Expect Data from Clicked to be equal to data from Added
+        expect(productNameAdded).toBe(productNameClicked) // Name Added = Name Clicked
+        expect(productPriceAdded).toBe(productPriceClicked) // Price Addded = PRice Clicked
+        expect(productSrcAdded).toContain(productSrcClicked) // SRC Added includes in SRC Clicked
+
     })
-
-
-
 
 })

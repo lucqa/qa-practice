@@ -22,4 +22,5 @@ This is a simple practice project for web automation testing.
 - .env set only for safer storing 'sensible' data
 - Full parallel
 - Headless execution
+- Fixtures to improve code reusability
 ## This is a WIP.
