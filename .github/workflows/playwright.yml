@@ -10,6 +10,7 @@ jobs:
     runs-on: windows-latest
     env:
         BASE_URL: ${{ vars.BASE_URL }}
+        WORKERS: ${{ vars.WORKERS }}
         CREDENCIAL_EMAIL: ${{ secrets.CREDENCIAL_EMAIL }}
         CREDENCIAL_PASSWORD: ${{ secrets.CREDENCIAL_PASSWORD }}
     steps:
