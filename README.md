@@ -23,4 +23,6 @@ This is a simple practice project for web automation testing.
 - Full parallel
 - Headless execution
 - Fixtures to improve code reusability
+
+All mistakes are my own (i. e. no IA was used with this project).
 ## This is a WIP.

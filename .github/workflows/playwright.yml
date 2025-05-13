@@ -6,7 +6,7 @@ on:
     branches: [ main, master ]
 jobs:
   test:
-    timeout-minutes: 60
+    timeout-minutes: 5
     runs-on: windows-latest
     env:
         BASE_URL: ${{ vars.BASE_URL }}
