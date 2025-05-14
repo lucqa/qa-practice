@@ -115,7 +115,6 @@ test.describe("Basic Authentication Tests", () => {
 
 test.describe("Basic Ecommerce Tests", () => {
 
-
     test.beforeEach('Precondition: User must be logged', async ({ authEcommerce }) => {
 
         // Calling Page and Logging In
