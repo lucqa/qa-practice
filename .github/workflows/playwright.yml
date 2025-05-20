@@ -7,7 +7,10 @@ on:
 jobs:
   test:
     timeout-minutes: 5
-    runs-on: windows-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+          matrix:
+             os: [windows-latest, macos-latest]
     env:
         BASE_URL: ${{ vars.BASE_URL }}
         WORKERS: ${{ vars.WORKERS }}
