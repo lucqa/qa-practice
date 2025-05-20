@@ -10,7 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
           matrix:
-             os: [windows-latest, macos-latest]
+             os: [ubuntu-latest, windows-latest, macos-latest]
     env:
         BASE_URL: ${{ vars.BASE_URL }}
         WORKERS: ${{ vars.WORKERS }}
