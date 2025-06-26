@@ -1,6 +1,6 @@
 import { test, expect } from "my-test"
 
-test.describe("Basic Authentication Tests", () => {
+test.describe("Ecommerce: Authentication Tests", () => {
 
     test.beforeEach('Precondition: Call E-commerce endpoint', async ({ page }) => {
 
@@ -113,45 +113,3 @@ test.describe("Basic Authentication Tests", () => {
 
 })
 
-test.describe("Basic Ecommerce Tests", () => {
-
-    test.beforeEach('Precondition: User must be logged', async ({ authEcommerce }) => {
-
-        // Calling Page and Logging In
-        await authEcommerce.CallPageAndLogin()
-
-    })
-
-    test('Add an Item and Verify Shopping Cart', async ({ authEcommerce }) => {
-
-        // Storing first products Data to later assertion
-        const productNameClicked = await authEcommerce.nameAnyProduct.nth(0).textContent() // Name
-        const productPriceClicked = await authEcommerce.priceAnyProduct.nth(0).textContent() // Price
-        const productSrcClicked = await authEcommerce.srcAnyProduct.nth(0).getAttribute('src') // thumbnail
-
-        // Adding first product to cart (nth=0)
-        await authEcommerce.buttonAddToCartAnyProduct.nth(0).click()
-
-        // Verifying if Shopping Cart row was created (0=Header, Product>=1)
-        await expect(authEcommerce.containerAnyRowCartItem.nth(1)).toBeVisible()
-
-        // Storing Data from products nth=0
-        const productNameAdded = await authEcommerce.nameAnyCartItem.nth(0).textContent() // Name
-        const productPriceAdded = await authEcommerce.priceAnyCartItem.nth(0).textContent() // Price
-        const productSrcAdded = await authEcommerce.srcAnyCartItem.nth(0).getAttribute('src') // Thumbnail src
-        const productQuantityAdded = await authEcommerce.inputQuantityAnyCartItem.nth(0).inputValue() // Quantity
-
-        // Expect Remove button to be displayed
-        await expect(authEcommerce.buttonRemoveAnyCartItem).toBeVisible()
-
-        // Expect Quantity to be 1
-        expect(productQuantityAdded).toBe('1')
-
-        // Expect Data from Clicked to be equal to data from Added
-        expect(productNameAdded).toBe(productNameClicked) // Name Added = Name Clicked
-        expect(productPriceAdded).toBe(productPriceClicked) // Price Addded = PRice Clicked
-        expect(productSrcAdded).toContain(productSrcClicked) // SRC Added includes in SRC Clicked
-
-    })
-
-})

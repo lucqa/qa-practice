@@ -1,6 +1,6 @@
 // Fixture Importing List
 import { test as base } from '@playwright/test'
-import { AuthEcommerce } from '@Pages/auth-ecommerce'
+import { AuthEcommerce } from '@Pages/ecommerce/ecommerce'
 
 // Declaring Fixtures list
 type MyFixtures = {
