@@ -1,6 +1,6 @@
 import { type Page, type Locator, expect } from '@playwright/test'
 
-export class AuthEcommerce {
+export class AuthEcommerce_Elements {
 
     readonly page: Page // Mandatory
 
@@ -23,6 +23,7 @@ export class AuthEcommerce {
     readonly titleHeaderCart: Locator // cart-item cart-header cart-column
     readonly priceHeaderCart: Locator // cart-price cart-header cart-column
     readonly quantityHeaderCart: Locator // cart-quantity cart-header cart-column
+    readonly totalHeaderCart: Locator // cart-total cart-header cart-column
 
     // Shopping Cart Container
     readonly containerAnyRowCartItem: Locator // container for cart
@@ -95,6 +96,9 @@ export class AuthEcommerce {
         this.quantityHeaderCart = page.locator('//*[@class="cart-quantity cart-header cart-column"]')
         // Shopping Cart Header: Quantity column
 
+        this.totalHeaderCart = page.locator('//*[@class="cart-total-title"]')
+        // Shopping Cart Header: Total column
+
         this.containerAnyRowCartItem = page.locator('//*[@class="cart-row"]')
         // Any row in Shopping Cart. nth(0)=Headers, Products starts in nth(1)
 
@@ -161,84 +165,4 @@ export class AuthEcommerce {
         // Confirmation message
     }
 
-    async SubmitLoginForm(email: string, password: string) {
-
-        // Fill in email
-        await this.inputEmail.fill(email)
-
-        // Fill in password
-        await this.inputPassword.fill(password)
-
-        // Click Submit Button
-        await this.buttonSubmit.click()
-
-    }
-
-    async CallPageAndLogin() {
-
-        // Calling Data
-        const email = process.env.CREDENCIAL_EMAIL as string
-        const password = process.env.CREDENCIAL_PASSWORD as string
-
-        // Loading Ecommerce Page
-        await this.page.goto('auth_ecommerce')
-
-        // Calling LoginForm
-        await this.SubmitLoginForm(email, password)
-
-    }
-
-    async AddProductToShoppingCartByPosition(productPosition: number) {
-
-        // Starts with position=0
-        await this.buttonAddToCartAnyProduct.nth(productPosition).click()
-
-    }
-
-    async GetProductDataByCardPosition(productPosition: number) {
-
-        // Retrieving Data
-        const productNameClicked = await this.nameAnyProduct.nth(productPosition).textContent() // Name
-        const productPriceClicked = await this.priceAnyProduct.nth(productPosition).textContent() // Price
-        const productSrcClicked = await this.srcAnyProduct.nth(productPosition).getAttribute('src') // thumbnail
-
-        // Creating object to export
-        const productData = {
-            'name': productNameClicked,
-            'price': productPriceClicked,
-            'src': productSrcClicked
-        }
-
-        // Return Data
-        return productData
-    }
-    async GetProductDataByCartPosition(cardPosition: number) {
-
-        // Retrieving Data
-        const productNameAdded = await this.nameAnyCartItem.nth(cardPosition).textContent() // Name
-        const productPriceAdded = await this.priceAnyCartItem.nth(cardPosition).textContent() // Price
-        const productSrcAdded = await this.srcAnyCartItem.nth(cardPosition).getAttribute('src') // Thumbnail src
-        const productQuantityAdded = await this.inputQuantityAnyCartItem.nth(cardPosition).inputValue() // Quantity
-
-        // Creating object to export
-        const productData = {
-            'name': productNameAdded,
-            'price': productPriceAdded,
-            'src': productSrcAdded,
-            'quantity': productQuantityAdded
-        }
-
-        // Returning Data
-        return productData
-
-    }
-
-    async CompareCardWithCart(cardData: any, cartData: any) {
-
-        // Compare Card values with Cart values
-        expect(cartData.name).toBe(cardData.name) // Name Added = Name Clicked
-        expect(cartData.price).toBe(cardData.price) // Price Addded = PRice Clicked
-        expect(cartData.src).toContain(cardData.src) // SRC Added includes in SRC Clicked
-
-    }
 }

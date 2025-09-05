@@ -1,3 +1,4 @@
+import { GenericMethods } from "@Actions/GenericMethods"
 import { test, expect } from "my-test"
 
 test.describe("Ecommerce: Authentication Tests", () => {
@@ -9,105 +10,108 @@ test.describe("Ecommerce: Authentication Tests", () => {
 
     })
 
-    test("Access Login Page and Verify Elements", async ({ authEcommerce, page }) => {
+    test("Access Login Page and Verify Elements", async ({ authEcommerce_elements, GenericMethods }) => {
 
         // Assertion URL ends wit 'auth_ecommerce'
-        await expect(page).toHaveURL(/auth_ecommerce$/)
+        await GenericMethods.assertion_UrlToContain('auth_ecommerce')
 
         // Assertion Login Shop Container exists in DOM
-        await expect(authEcommerce.containerLoginShop).toBeVisible()
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.containerLoginShop)
 
         // Assertion String 'Login - Shop' exists in Shop Container
-        await expect(authEcommerce.containerLoginShop).toContainText('Login - Shop')
+        await GenericMethods.assertion_TextToBePresentInElement(authEcommerce_elements.containerLoginShop, 'Login - Shop')
 
         // Assertion Email Form is Visible
-        await expect(authEcommerce.inputEmail).toBeVisible()
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.inputEmail)
 
         // Assertion Password Form is Visible
-        await expect(authEcommerce.inputPassword).toBeVisible()
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.inputPassword)
 
-        // Assertion Submit button is visible
-        await expect(authEcommerce.buttonSubmit).toBeVisible()
+        // Assertion Submit Button is Visible
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.buttonSubmit)
 
     })
 
-    test('Authenticate with Valid Credentials', async ({ authEcommerce }) => {
+    test('Authenticate with Valid Credentials', async ({ authEcommerce_elements, authEcommerce_actions, GenericMethods }) => {
 
         // Calling Test Data
         const email = process.env.CREDENCIAL_EMAIL as string
         const password = process.env.CREDENCIAL_PASSWORD as string
 
         // Filling Login Form
-        await authEcommerce.SubmitLoginForm(email, password)
+        await authEcommerce_actions.SubmitLoginForm(email, password)
 
         // Assertion Logout link is displayed
-        await expect(authEcommerce.linkLogout).toBeVisible()
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.linkLogout)
 
         // Assertion Logout link contains the text Log Out
-        await expect(authEcommerce.linkLogout).toContainText('Log Out')
+        await GenericMethods.assertion_TextToBePresentInElement(authEcommerce_elements.linkLogout, 'Log Out')
 
         // Assertion Header Title
-        await expect(authEcommerce.titleHeaderCart).toContainText('ITEM')
+        await GenericMethods.assertion_TextToBePresentInElement(authEcommerce_elements.titleHeaderCart, 'ITEM')
 
-        // Assertion Header Price
-        await expect(authEcommerce.priceHeaderCart).toContainText('PRICE')
+        // Assertion Header Price'
+        await GenericMethods.assertion_TextToBePresentInElement(authEcommerce_elements.priceHeaderCart, 'PRICE')
 
         // Assertion Header Quantity
-        await expect(authEcommerce.quantityHeaderCart).toContainText('QUANTITY')
+        await GenericMethods.assertion_TextToBePresentInElement(authEcommerce_elements.quantityHeaderCart, 'QUANTITY')
+
+        // Assertion Header Total
+        await GenericMethods.assertion_TextToBePresentInElement(authEcommerce_elements.totalHeaderCart, 'Total')
 
     })
 
-    test('Authenticate with Invalid Email', async ({ authEcommerce }) => {
+    test('Authenticate with Invalid Email', async ({ authEcommerce_elements, authEcommerce_actions, GenericMethods }) => {
 
         // Calling Test Data
         const password = process.env.CREDENCIAL_PASSWORD as string
 
         // Filling Login Form
-        await authEcommerce.SubmitLoginForm('123@123.com', password)
+        await authEcommerce_actions.SubmitLoginForm('123@123.com', password)
 
         // Assertion Logout link is NOT displayed
-        await expect(authEcommerce.linkLogout).not.toBeVisible()
+        await GenericMethods.assertion_ElementToNotBeVisible(authEcommerce_elements.linkLogout)
 
         // Assertion Red Alert container is visible
-        await expect(authEcommerce.containerLoginAlert).toBeVisible()
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.containerLoginAlert)
 
         // Assertion Red Alert Container contains Bad Credentials message 
-        await expect(authEcommerce.containerLoginAlert).toContainText("Bad credentials! Please try again! Make sure that you've registered.")
+        await GenericMethods.assertion_TextToBePresentInElement(authEcommerce_elements.containerLoginAlert, "Bad credentials! Please try again! Make sure that you've registered.")
 
     })
 
-    test('Authenticate with Invalid Password', async ({ authEcommerce }) => {
+    test('Authenticate with Invalid Password', async ({ authEcommerce_elements, authEcommerce_actions, GenericMethods }) => {
 
         // Calling Test Data
         const email = process.env.CREDENCIAL_EMAIL as string
 
         // Filling Login Form
-        await authEcommerce.SubmitLoginForm(email, '1234567890')
+        await authEcommerce_actions.SubmitLoginForm(email, '1234567890')
 
         // Assertion Logout link is NOT displayed
-        await expect(authEcommerce.linkLogout).not.toBeVisible()
+        await GenericMethods.assertion_ElementToNotBeVisible(authEcommerce_elements.linkLogout)
 
         // Assertion Red Alert container is visible
-        await expect(authEcommerce.containerLoginAlert).toBeVisible()
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.containerLoginAlert)
 
         // Assertion Red Alert Container contains Bad Credentials message 
-        await expect(authEcommerce.containerLoginAlert).toContainText("Bad credentials! Please try again! Make sure that you've registered.")
+        await GenericMethods.assertion_TextToBePresentInElement(authEcommerce_elements.containerLoginAlert, "Bad credentials! Please try again! Make sure that you've registered.")
 
     })
 
-    test('Authenticate Without Credentials', async ({ authEcommerce }) => {
+    test('Authenticate Without Credentials', async ({ authEcommerce_elements, authEcommerce_actions, GenericMethods }) => {
 
         // Filling Login Form
-        await authEcommerce.SubmitLoginForm('', '')
+        await authEcommerce_actions.SubmitLoginForm('', '')
 
         // Assertion Logout link is NOT displayed
-        await expect(authEcommerce.linkLogout).not.toBeVisible()
+        await GenericMethods.assertion_ElementToNotBeVisible(authEcommerce_elements.linkLogout)
 
         // Assertion Red Alert container is visible
-        await expect(authEcommerce.containerLoginAlert).toBeVisible()
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.containerLoginAlert)
 
         // Assertion Red Alert Container contains Bad Credentials message 
-        await expect(authEcommerce.containerLoginAlert).toContainText("Bad credentials! Please try again! Make sure that you've registered.")
+        await GenericMethods.assertion_TextToBePresentInElement(authEcommerce_elements.containerLoginAlert, "Bad credentials! Please try again! Make sure that you've registered.")
 
     })
 
