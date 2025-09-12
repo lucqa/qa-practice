@@ -1,147 +1,171 @@
-import { test, expect } from "my-test"
+import { test } from "my-test"
 
 test.describe("commerce: Shipping Form Tests", () => {
 
-    test.beforeEach('Precondition: User must be logged and Cart Must Be Created', async ({ authEcommerce }) => {
+    test.beforeEach('Precondition: User must be logged and Cart Must Be Created', async ({ authEcommerce_elements, authEcommerce_actions, GenericMethods }) => {
 
         // Calling Page and Logging In
-        await authEcommerce.CallPageAndLogin()
+        await authEcommerce_actions.CallPageAndLogin()
 
         // Adding first product to cart (nth=0)
-        await authEcommerce.AddProductToShoppingCartByPosition(0)
+        await authEcommerce_actions.AddProductToShoppingCartByPosition(0)
 
         // Adding 2nd product to cart (nth=1)
-        await authEcommerce.AddProductToShoppingCartByPosition(1)
+        await authEcommerce_actions.AddProductToShoppingCartByPosition(1)
 
         // Adding 3rd product to cart (nth=2)
-        await authEcommerce.AddProductToShoppingCartByPosition(2)
+        await authEcommerce_actions.AddProductToShoppingCartByPosition(2)
 
         // Click Proceed to Checkout
-        await authEcommerce.proceedToCheckout.click()
+        await GenericMethods.clickOn(authEcommerce_elements.proceedToCheckout)
 
     })
 
-    test('Check Shipping Details', async ({ authEcommerce }) => {
+    test('Check Shipping Details', async ({ authEcommerce_elements, GenericMethods }) => {
 
-        // Assertion Shipping Details
-        await expect(authEcommerce.shippingDetailsContainer).toBeVisible()
-        await expect(authEcommerce.shippingDetailsContainer).toContainText('Shipping Details')
+        // Test Data
+        const expectedTextShippingDetails = 'Shipping Details'
 
-        // Assertion Phone
-        await expect(authEcommerce.phoneNumberLabel).toBeVisible()
-        await expect(authEcommerce.phoneNumberInput).toBeVisible()
+        // Assertion Shipping Details is visible
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.shippingDetailsContainer)
 
-        // Assertion Street
-        await expect(authEcommerce.streetFormLabel).toBeVisible()
-        await expect(authEcommerce.streetFormInput).toBeVisible()
+        // Assertion Shipping Details text
+        await GenericMethods.assertion_TextToBePresentInElement(authEcommerce_elements.shippingDetailsContainer, expectedTextShippingDetails)
 
-        // Assertion City
-        await expect(authEcommerce.cityFormLabel).toBeVisible()
-        await expect(authEcommerce.cityFormInput).toBeVisible()
+        // Assertion Phone Label and Input are Visible
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.phoneNumberLabel)
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.phoneNumberInput)
 
-        // Assertion Country
-        await expect(authEcommerce.countryFormLabel).toBeVisible()
-        await expect(authEcommerce.countryFormSelect).toBeVisible()
+        // Assertion Street Label and Input are Visible
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.streetFormLabel)
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.streetFormInput)
+
+        // Assertion City Label and Input are Visible
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.cityFormLabel)
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.cityFormInput)
+
+        // Assertion Country Label and Select are Visible
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.countryFormLabel)
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.countryFormSelect)
 
         // Assertion Submit Order
-        await expect(authEcommerce.submitOrderButton).toBeVisible()
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.submitOrderButton)
     })
 
-    test('Complete an Order: Phone Number is Mandatory', async ({ authEcommerce }) => {
+    test('Complete an Order: Phone Number is Mandatory', async ({ authEcommerce_elements, GenericMethods }) => {
+
+        // Test Data, expected attribute and value
+        const expectedAttribute = 'style'
+        const expectedAttributeValue = 'color: red;'
 
         // Fill in Street
-        await authEcommerce.streetFormInput.fill(authEcommerce.placeholderShippingDetails.street)
+        await GenericMethods.fill(authEcommerce_elements.streetFormInput, authEcommerce_elements.placeholderShippingDetails.street)
 
         // Fill in City
-        await authEcommerce.cityFormInput.fill(authEcommerce.placeholderShippingDetails.city)
+        await GenericMethods.fill(authEcommerce_elements.cityFormInput, authEcommerce_elements.placeholderShippingDetails.city)
 
         // Select in Country
-        await authEcommerce.countryFormSelect.selectOption(authEcommerce.placeholderShippingDetails.country)
+        await GenericMethods.selectOptionByValue(authEcommerce_elements.countryFormSelect, authEcommerce_elements.placeholderShippingDetails.country)
 
         // Click Submit Order
-        await authEcommerce.submitOrderButton.click()
+        await GenericMethods.clickOn(authEcommerce_elements.submitOrderButton)
 
         // Dropdown must change style
-        await expect(authEcommerce.countryFormSelect).toHaveAttribute('style', 'color: red;')
+        await GenericMethods.assertion_AttributeToBe(authEcommerce_elements.countryFormSelect, expectedAttribute, expectedAttributeValue)
 
     })
 
-    test('Complete an Order: Street is Mandatory', async ({ authEcommerce }) => {
+    test('Complete an Order: Street is Mandatory', async ({ authEcommerce_elements, GenericMethods }) => {
+
+        // Test Data, expected attribute and value
+        const expectedAttribute = 'style'
+        const expectedAttributeValue = 'color: red;'
 
         // Fill in Phone Number
-        await authEcommerce.phoneNumberInput.fill(authEcommerce.placeholderShippingDetails.phone)
+        await GenericMethods.fill(authEcommerce_elements.phoneNumberInput, authEcommerce_elements.placeholderShippingDetails.phone)
 
         // Fill in City
-        await authEcommerce.cityFormInput.fill(authEcommerce.placeholderShippingDetails.city)
+        await GenericMethods.fill(authEcommerce_elements.cityFormInput, authEcommerce_elements.placeholderShippingDetails.city)
 
         // Select in Country
-        await authEcommerce.countryFormSelect.selectOption(authEcommerce.placeholderShippingDetails.country)
+        await GenericMethods.selectOptionByValue(authEcommerce_elements.countryFormSelect, authEcommerce_elements.placeholderShippingDetails.country)
 
         // Click Submit Order
-        await authEcommerce.submitOrderButton.click()
+        await GenericMethods.clickOn(authEcommerce_elements.submitOrderButton)
 
         // Dropdown must change style
-        await expect(authEcommerce.countryFormSelect).toHaveAttribute('style', 'color: red;')
+        await GenericMethods.assertion_AttributeToBe(authEcommerce_elements.countryFormSelect, expectedAttribute, expectedAttributeValue)
 
     })
 
-    test('Complete an Order: City is Mandatory', async ({ page, authEcommerce }) => {
+    test('Complete an Order: City is Mandatory', async ({ GenericMethods, authEcommerce_elements }) => {
+
+        // Test Data, expected attribute and value
+        const expectedAttribute = 'style'
+        const expectedAttributeValue = 'color: red;'
 
         // Fill in Street
-        await authEcommerce.streetFormInput.fill(authEcommerce.placeholderShippingDetails.street)
+        await GenericMethods.fill(authEcommerce_elements.streetFormInput, authEcommerce_elements.placeholderShippingDetails.street)
 
         // Fill in Phoe Number
-        await authEcommerce.phoneNumberInput.fill(authEcommerce.placeholderShippingDetails.phone)
+        await GenericMethods.fill(authEcommerce_elements.phoneNumberInput, authEcommerce_elements.placeholderShippingDetails.phone)
 
         // Select in Country
-        await authEcommerce.countryFormSelect.selectOption(authEcommerce.placeholderShippingDetails.country)
+        await GenericMethods.selectOptionByValue(authEcommerce_elements.countryFormSelect, authEcommerce_elements.placeholderShippingDetails.country)
 
         // Click Submit Order
-        await authEcommerce.submitOrderButton.click()
+        await GenericMethods.clickOn(authEcommerce_elements.submitOrderButton)
 
         // Dropdown must change style
-        await expect(authEcommerce.countryFormSelect).toHaveAttribute('style', 'color: red;')
-
-    })
-    test('Complete an Order: Country is Mandatory', async ({ page, authEcommerce }) => {
-
-        // Fill in Phnoe Number
-        await authEcommerce.phoneNumberInput.fill(authEcommerce.placeholderShippingDetails.phone)
-
-        // Fill in Street
-        await authEcommerce.streetFormInput.fill(authEcommerce.placeholderShippingDetails.street)
-
-        // Fill in City
-        await authEcommerce.cityFormInput.fill(authEcommerce.placeholderShippingDetails.city)
-
-        // Click Submit Order
-        await authEcommerce.submitOrderButton.click()
-
-        // Dropdown must change style
-        await expect(authEcommerce.countryFormSelect).toHaveAttribute('style', 'color: red;')
+        await GenericMethods.assertion_AttributeToBe(authEcommerce_elements.countryFormSelect, expectedAttribute, expectedAttributeValue)
 
     })
 
-    test('Complete an Order: All Fields Fullfiled', async ({ page, authEcommerce }) => {
+    test('Complete an Order: Country is Mandatory', async ({ GenericMethods, authEcommerce_elements }) => {
+
+        // Test Data, expected attribute and value
+        const expectedAttribute = 'style'
+        const expectedAttributeValue = 'color: red;'
 
         // Fill in Phnoe Number
-        await authEcommerce.phoneNumberInput.fill(authEcommerce.placeholderShippingDetails.phone)
+        await GenericMethods.fill(authEcommerce_elements.phoneNumberInput, authEcommerce_elements.placeholderShippingDetails.phone)
 
         // Fill in Street
-        await authEcommerce.streetFormInput.fill(authEcommerce.placeholderShippingDetails.street)
+        await GenericMethods.fill(authEcommerce_elements.streetFormInput, authEcommerce_elements.placeholderShippingDetails.street)
 
         // Fill in City
-        await authEcommerce.cityFormInput.fill(authEcommerce.placeholderShippingDetails.city)
-
-        // Select in Country
-        await authEcommerce.countryFormSelect.selectOption(authEcommerce.placeholderShippingDetails.country)
+        await GenericMethods.fill(authEcommerce_elements.cityFormInput, authEcommerce_elements.placeholderShippingDetails.city)
 
         // Click Submit Order
-        await authEcommerce.submitOrderButton.click()
+        await GenericMethods.clickOn(authEcommerce_elements.submitOrderButton)
+
+        // Dropdown must change style
+        await GenericMethods.assertion_AttributeToBe(authEcommerce_elements.countryFormSelect, expectedAttribute, expectedAttributeValue)
+
+    })
+
+    test('Complete an Order: All Fields Fullfiled', async ({ GenericMethods, authEcommerce_elements }) => {
+
+        // Fill in Phnoe Number
+        await GenericMethods.fill(authEcommerce_elements.phoneNumberInput, authEcommerce_elements.placeholderShippingDetails.phone)
+
+        // Fill in Street
+        await GenericMethods.fill(authEcommerce_elements.streetFormInput, authEcommerce_elements.placeholderShippingDetails.street)
+
+        // Fill in City
+        await GenericMethods.fill(authEcommerce_elements.cityFormInput, authEcommerce_elements.placeholderShippingDetails.city)
+
+        // Select in Country
+        await GenericMethods.selectOptionByValue(authEcommerce_elements.countryFormSelect, authEcommerce_elements.placeholderShippingDetails.country)
+
+        // Click Submit Order
+        await GenericMethods.clickOn(authEcommerce_elements.submitOrderButton)
 
         // Expect confirmation message
-        await expect.soft(page.locator('//*[@id="message"]')).toBeVisible()
-        await expect.soft(page.locator('//*[@id="message"]')).toHaveText(authEcommerce.placeholderShippingDetails.confirmationMessage)
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.confirmationMessage)
+
+        // Expect confirmation message text
+        await GenericMethods.assertion_TextToBePresentInElement(authEcommerce_elements.confirmationMessage, authEcommerce_elements.placeholderShippingDetails.confirmationMessage)
 
     })
 })
