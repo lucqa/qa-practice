@@ -12,7 +12,7 @@ export class GenericMethods {
     }
 
     // Method To Click On Element
-    async click_On(element: Locator) {
+    async clickOn(element: Locator) {
         await element.click()
     }
 
@@ -42,7 +42,7 @@ export class GenericMethods {
         expect(element).toBe(value)
     }
 
-    // Method to Fill input
+    // Method to Fill an input
     async fill(element: Locator, value: string) {
         await element.fill(value)
     }

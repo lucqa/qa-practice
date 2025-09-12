@@ -1,4 +1,4 @@
-import { test, expect } from "my-test"
+import { test } from "my-test"
 
 test.describe("commerce: Cart Tests", () => {
 
@@ -11,65 +11,77 @@ test.describe("commerce: Cart Tests", () => {
 
     test('Add an Item to Shopping Cart', async ({ authEcommerce_elements, authEcommerce_actions, GenericMethods }) => {
 
+        // Test Data
+        const firstProductPosition = 0
+        const shoppingCartRowPosition = 1
+        const shoppingCartRow = 0
+        const expectedQuantity = '1'
+
         // Storing first products Data to later assertion
-        // const firstProductCardData = await authEcommerce_elements.GetProductDataByCardPosition(0)
-        const firstProductCardData = await authEcommerce_actions.GetProductDataByCardPosition(0)
+        const firstProductCardData = await authEcommerce_actions.GetProductDataByCardPosition(firstProductPosition)
 
         // Adding first product to cart (nth=0)
-        // await authEcommerce_elements.AddProductToShoppingCartByPosition(0)
-        await authEcommerce_actions.AddProductToShoppingCartByPosition(0)
+        await authEcommerce_actions.AddProductToShoppingCartByPosition(firstProductPosition)
 
         // Verifying if Shopping Cart row was created (0=Header, Product>=1)
-        // await expect(authEcommerce_elements.containerAnyRowCartItem.nth(1)).toBeVisible()
-        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.containerAnyRowCartItem.nth(1))
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.containerAnyRowCartItem.nth(shoppingCartRowPosition))
 
         // Storing Data from Shopping Cart products nth=0
-        // const firstCartProductData = await authEcommerce_elements.GetProductDataByCartPosition(0)
-        const firstCartProductData = await authEcommerce_actions.GetProductDataByCartPosition(0)
+        const firstCartProductData = await authEcommerce_actions.GetProductDataByCartPosition(shoppingCartRow)
 
         // Expect Remove button to be displayed
-        // await expect(authEcommerce_elements.buttonRemoveAnyCartItem).toBeVisible()
         await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.buttonRemoveAnyCartItem)
 
         // Expect Quantity to be 1
-        // expect(firstCartProductData.quantity).toBe('1')
-        await GenericMethods.assertion_ValueToBe(firstCartProductData.quantity, '1')
+        await GenericMethods.assertion_ValueToBe(firstCartProductData.quantity, expectedQuantity)
 
         // Expect Data from Clicked to be equal to data from Added
-        // await authEcommerce_elements.CompareCardWithCart(firstProductCardData, firstCartProductData)
         await authEcommerce_actions.CompareCardWithCart(firstProductCardData, firstCartProductData)
 
     })
 
     test('Remove an Item From Shopping Cart', async ({ authEcommerce_elements, authEcommerce_actions, GenericMethods }) => {
 
+        // Test Data
+        const shoppingCartRowPosition = 1
+        const productPosition = 0
+
         // Adding first product to cart (nth=0)
-        await authEcommerce_actions.AddProductToShoppingCartByPosition(0)
+        await authEcommerce_actions.AddProductToShoppingCartByPosition(productPosition)
 
         // Verifying if Shopping Cart row was created (0=Header, Product>=1)
-        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.containerAnyRowCartItem.nth(1))
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.containerAnyRowCartItem.nth(shoppingCartRowPosition))
 
         // Expect Remove button to be displayed
-        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.buttonRemoveAnyCartItem.nth(0))
+        await GenericMethods.assertion_ElementToBeVisible(authEcommerce_elements.buttonRemoveAnyCartItem.nth(productPosition))
 
         // Click Remove
-        await GenericMethods.click_On(authEcommerce_elements.buttonRemoveAnyCartItem.nth(0))
+        await GenericMethods.clickOn(authEcommerce_elements.buttonRemoveAnyCartItem.nth(productPosition))
 
         // Assertion Shopping Cart row is removed
-        await GenericMethods.assertion_ElementToNotBeVisible(authEcommerce_elements.containerAnyRowCartItem.nth(1))
+        await GenericMethods.assertion_ElementToNotBeVisible(authEcommerce_elements.containerAnyRowCartItem.nth(shoppingCartRowPosition))
 
     })
 
     test('Add Multiples Items to the Shopping Cart', async ({ authEcommerce_elements, authEcommerce_actions, GenericMethods }) => {
 
-        // Storing Products Data from Cards
-        const firstProductCard = await authEcommerce_actions.GetProductDataByCardPosition(0)
+        // Test Data
+        const  firstProductsCardPosition = 0
+        const  secondProductsCardPosition = 1
+        const  thirdProductsCardPosition = 2
+        const firstProductCartPosition = 0
+        const secondProductCartPosition = 1
+        const thirdProductCartPosition = 2
+        const eachProductExpectedQuantity = '1'
 
         // Storing Products Data from Cards
-        const secondProductCard = await authEcommerce_actions.GetProductDataByCardPosition(1)
+        const firstProductCard = await authEcommerce_actions.GetProductDataByCardPosition(firstProductsCardPosition)
 
         // Storing Products Data from Cards
-        const thirdProductCard = await authEcommerce_actions.GetProductDataByCardPosition(2)
+        const secondProductCard = await authEcommerce_actions.GetProductDataByCardPosition(secondProductsCardPosition)
+
+        // Storing Products Data from Cards
+        const thirdProductCard = await authEcommerce_actions.GetProductDataByCardPosition(thirdProductsCardPosition)
 
         // Calc Final Price
         const finalCalcPrice = await authEcommerce_actions.CalculateTotalPrice(
@@ -79,33 +91,33 @@ test.describe("commerce: Cart Tests", () => {
         )
 
         // Adding first product to cart (nth=0)
-        await authEcommerce_actions.AddProductToShoppingCartByPosition(0)
+        await authEcommerce_actions.AddProductToShoppingCartByPosition(firstProductsCardPosition)
 
         // Adding 2nd product to cart (nth=1)
-        await authEcommerce_actions.AddProductToShoppingCartByPosition(1)
+        await authEcommerce_actions.AddProductToShoppingCartByPosition(secondProductsCardPosition)
 
         // Adding 3rd product to cart (nth=2)
-        await authEcommerce_actions.AddProductToShoppingCartByPosition(2)
+        await authEcommerce_actions.AddProductToShoppingCartByPosition(thirdProductsCardPosition)
 
         // Retrieving Cart Data
-        const firstProductCart = await authEcommerce_actions.GetProductDataByCartPosition(0)
+        const firstProductCart = await authEcommerce_actions.GetProductDataByCartPosition(firstProductCartPosition)
 
         // Retrieving Cart Data
-        const secondProductCart = await authEcommerce_actions.GetProductDataByCartPosition(1)
+        const secondProductCart = await authEcommerce_actions.GetProductDataByCartPosition(secondProductCartPosition)
 
         // Retrieving Cart Data
-        const thirdProductCart = await authEcommerce_actions.GetProductDataByCartPosition(2)
+        const thirdProductCart = await authEcommerce_actions.GetProductDataByCartPosition(thirdProductCartPosition)
 
         // Comparing Card 1st with Cart 1st - Has to Match
-        await GenericMethods.assertion_ValueToBe(firstProductCart.quantity, '1')
+        await GenericMethods.assertion_ValueToBe(firstProductCart.quantity, eachProductExpectedQuantity)
         await authEcommerce_actions.CompareCardWithCart(firstProductCard, firstProductCart)
 
         // Comparing Card 1st with Cart 1st - Has to Match
-        await GenericMethods.assertion_ValueToBe(secondProductCart.quantity, '1')   
+        await GenericMethods.assertion_ValueToBe(secondProductCart.quantity, eachProductExpectedQuantity)   
         await authEcommerce_actions.CompareCardWithCart(secondProductCard, secondProductCart)
 
         // Comparing Card 1st with Cart 1st - Has to Match
-        await GenericMethods.assertion_ValueToBe(thirdProductCart.quantity, '1')
+        await GenericMethods.assertion_ValueToBe(thirdProductCart.quantity, eachProductExpectedQuantity)
         await authEcommerce_actions.CompareCardWithCart(thirdProductCard, thirdProductCart)
 
         // Retrieving Final Price from UI
@@ -116,7 +128,4 @@ test.describe("commerce: Cart Tests", () => {
 
     })
 
-   
-
-    
 })
