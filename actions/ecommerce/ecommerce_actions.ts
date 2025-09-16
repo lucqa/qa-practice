@@ -4,7 +4,7 @@ import { AuthEcommerce_Elements } from '@Pages/ecommerce/ecommerce_elements'
 export class AuthEcommerce_Actions {
 
     readonly page: Page // Mandatory
-    readonly authEcommerce_Elements: AuthEcommerce_Elements
+    readonly authEcommerce_Elements: AuthEcommerce_Elements // Self declare for use in below methods
 
     constructor(page: Page) {
 

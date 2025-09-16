@@ -1,14 +1,18 @@
 // Fixture Importing List
 import { test as base } from '@playwright/test'
+import { GenericMethods } from '@Actions/GenericMethods'
 import { AuthEcommerce_Elements } from '@Pages/ecommerce/ecommerce_elements'
 import { AuthEcommerce_Actions } from '@Actions/ecommerce/ecommerce_actions'
-import { GenericMethods } from '@Actions/GenericMethods'
+import { BugForm_Elements } from '@Pages/bugs-form/bugs-form_elements'
+import { BugForm_Actions } from '@Actions/bugs-form/bugs-form_actions'
 
 // Declaring Fixtures list
 type MyFixtures = {
+    GenericMethods: GenericMethods,
     authEcommerce_elements: AuthEcommerce_Elements,
     authEcommerce_actions: AuthEcommerce_Actions,
-    GenericMethods: GenericMethods
+    BugForm_Elements: BugForm_Elements,
+    BugForm_Actions: BugForm_Actions
 }
 
 // Extending test to include the Fixtures
@@ -26,6 +30,14 @@ export const test = base.extend<MyFixtures>({
     GenericMethods: async ({ page }, use) => {
         const genericActions = new GenericMethods(page)
         await use(genericActions)
+    },
+    BugForm_Elements: async ({ page }, use) => {
+        const bugForm_Elements = new BugForm_Elements(page)
+        await use(bugForm_Elements)
+    },
+    BugForm_Actions: async ({ page }, use) => {
+        const bugForm_Actions = new BugForm_Actions(page)
+        await use(bugForm_Actions)
     }
 
 })
