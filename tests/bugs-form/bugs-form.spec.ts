@@ -2,18 +2,18 @@ import { test } from 'my-test'
 
 test.describe('Bugs Form', () => {
 
-    // test.beforeAll(async ({ }) => {
-
-    //     console.log(`As part of Bug Challenge, 7 tests are expected to be failing. Known Bug list:
-    //         1. Many label locators are using the same attribute for, using numbered locatores are not recommended but may work as a workaround.
-    //         2. Phone number label has a typo, UI Validation test case will fail
-    //         3. Terms and Conditions Check Box is disabled, thus not clickable by default - using JS to remove disabled attribute as a workaround
-    //         4. Last Name results is removing last letter from input
-    //         5. Phone number results is increasing +1 from input
-    //         6. Last Name should be mandatory but it it's implementation is as optional
-    //         7. Terms and Conditions should be mandatory but its implementation is as option
-    //         8. Email should be mandatory but it is optional\n`)
-    // })
+    // This page has intentionally multiple bugs Some tests are expected to fail. Some of them are:
+    // 1. Many label locators are using the same attribute for, using numbered locatores are not recommended but may work as a workaround.
+    // 2. Phone number label has a typo, UI Validation test case will fail
+    // 3. Terms and Conditions Check Box is disabled, thus not clickable by default - using JS to remove disabled attribute as a workaround
+    // 4. Last Name results is removing last letter from input
+    // 5. Phone number results is increasing +1 from input
+    // 6. Last Name should be mandatory but it it's implementation is as optional
+    // 7. Terms and Conditions should be mandatory but its implementation is as option
+    // 8. Email should be mandatory but it is optional
+    // 9. Phone number accepts letters when it shouldnt
+    // 10. Email input is not validated (accepts invalid emails)
+    // 11. Password input is not validated `
 
     test.beforeEach(async ({ page }) => {
 
@@ -22,6 +22,264 @@ test.describe('Bugs Form', () => {
 
         // Loading Page
         await page.goto(pageName)
+
+    })
+
+    test('Bug Form - Submit Form and Validate Results', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
+
+        // Test Data
+        const firstName = 'John'
+        const lastName = 'Doe'
+        const phoneNumber = '12345678901'
+        const country = 'Brazil'
+        const email = 'john@doe.com'
+        const password = 'Password123'
+        const successMessage = 'Successfully registered the following information'
+
+        // Completing the form and submitting
+        await BugForm_Actions.SubmitBugForm(firstName, lastName, phoneNumber, country, email, password, true)
+
+        // Asserting Success Message is Visible
+        await GenericMethods.assertion_ElementToBeVisible(BugForm_Elements.messageContainer)
+
+        // Asserting Success Message Text
+        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.messageContainer, successMessage)
+
+        // Asserting Results Section is Visible
+        await GenericMethods.assertion_ElementToBeVisible(BugForm_Elements.resultsSectionContainer)
+
+        // Asserting Result First Name
+        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.resultFirstName, firstName)
+
+        // Asserting Result Last Name
+        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.resultLastName, lastName)
+
+        // Asserting Result Phone Number
+        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.resultPhoneNumber, phoneNumber)
+
+        // Asserting Result Country
+        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.resultCountry, country)
+
+        // Asserting Result Email
+        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.resultEmail, email)
+
+    })
+
+    test('Bug Form - Submit Form Negative Test - Without Mandatory Last Name', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
+
+        // Test Data
+        const firstName = 'John'
+        const phoneNumber = '12345678901'
+        const country = 'Brazil'
+        const email = 'john@doe.com'
+        const password = 'Password123'
+        const successMessage = 'Successfully registered the following information'
+
+        // Completing the form and submitting
+        await BugForm_Actions.SubmitBugForm(firstName, '', phoneNumber, country, email, password, true)
+
+        // Asserting Success Message is not Visible
+        await GenericMethods.assertion_ElementToNotBeVisible(BugForm_Elements.messageContainer)
+
+        // Asserting Success Message Text is not Visible
+        await GenericMethods.assertion_TextToNotBePresentInElement(BugForm_Elements.messageContainer, successMessage)
+
+        // Asserting Results Section is not Visible
+        await GenericMethods.assertion_ElementToNotBeVisible(BugForm_Elements.resultsSectionContainer)
+
+    })
+
+    test('Bug Form - Submit Form Negative Test - Without Mandatory Phone Number', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
+
+        // Test Data
+        const firstName = 'John'
+        const lastName = 'Doe'
+        const country = 'Brazil'
+        const email = 'john@doe.com'
+        const password = 'Password123'
+        const errorMessage = 'The phone number should contain at least 10 characters!'
+
+        // Completing the form and submitting
+        await BugForm_Actions.SubmitBugForm(firstName, lastName, '', country, email, password, true)
+
+        // Asserting Message Container is Visible
+        await GenericMethods.assertion_ElementToBeVisible(BugForm_Elements.messageContainer)
+
+        // Asserting Error Message Text
+        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.messageContainer, errorMessage)
+
+    })
+
+    test('Bug Form - Submit Form Negative Test - Without Mandatory Email', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
+
+        // Test Data
+        const firstName = 'John'
+        const lastName = 'Doe'
+        const country = 'Brazil'
+        const phoneNumber = '12345678901'
+        const password = 'Password123'
+        const errorMessage = 'The phone number should contain at least 10 characters!'
+
+        // Completing the form and submitting
+        await BugForm_Actions.SubmitBugForm(firstName, lastName, phoneNumber, country, '', password, true)
+
+        // Asserting Message Container is Visible
+        await GenericMethods.assertion_ElementToBeVisible(BugForm_Elements.messageContainer)
+
+        // Asserting Error Message Text
+        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.messageContainer, errorMessage)
+        
+    })
+
+    test('Bug Form - Submit Form Negative Test - Without Mandatory Password', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
+
+        // Test Data
+        const firstName = 'John'
+        const lastName = 'Doe'
+        const phoneNumber = '12345678901'
+        const country = 'Brazil'
+        const email = 'john@doe.com'
+        const errorMessage = 'The password should contain between [6,20] characters!'
+
+        // Completing the form and submitting
+        await BugForm_Actions.SubmitBugForm(firstName, lastName, phoneNumber, country, email, '', true)
+
+        // Asserting Message Container is Visible
+        await GenericMethods.assertion_ElementToBeVisible(BugForm_Elements.messageContainer)
+
+        // Asserting Error Message Text
+        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.messageContainer, errorMessage)
+
+    })
+
+    test('Bug Form - Submit Form Negative Test - Without Accepting Terms and Conditions', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
+
+        const firstName = 'John'
+        const lastName = 'Doe'
+        const phoneNumber = '12345678901'
+        const country = 'Brazil'
+        const email = 'john@doe.com'
+        const password = 'Password123'
+        const successMessage = 'Successfully registered the following information'
+
+        // Completing the form and submitting without accepting terms and conditions
+        await BugForm_Actions.SubmitBugForm(firstName, lastName, phoneNumber, country, email, password, false)
+
+        // Asserting Success Message Text is not Visible
+        await GenericMethods.assertion_TextToNotBePresentInElement(BugForm_Elements.messageContainer, successMessage)
+
+    })
+
+    test('Bug Form - Submit Form Negative Test - With Invalid Phone Number', async ({ BugForm_Actions, BugForm_Elements, GenericMethods, page }) => {
+
+        // Test Data
+        const firstName = 'John'
+        const lastName = 'Doe'
+        const phoneNumber = 'abcdefghijklmno'
+        const country = 'Brazil'
+        const email = 'john@doe.com'
+        const password = 'Password123'
+
+        // Completing the form and submitting
+        await BugForm_Actions.SubmitBugForm(firstName, lastName, phoneNumber, country, email, password, true)
+
+        // Asserting Message Container is not Visible
+        await GenericMethods.assertion_ElementToNotBeVisible(BugForm_Elements.messageContainer)
+
+    })
+
+    test('Bug Form - Submit Form Negative Test - With Invalid Password', async ({ BugForm_Actions, BugForm_Elements, GenericMethods, page }) => {
+
+        // Test Data
+        const firstName = 'John'
+        const lastName = 'Doe'
+        const phoneNumber = '12345678901'
+        const country = 'Brazil'
+        const email = 'john@doe.com'
+        const password = '12345'
+        const errorMessage = 'The password should contain between [6,20] characters!'
+
+        // Completing the form and submitting
+        await BugForm_Actions.SubmitBugForm(firstName, lastName, phoneNumber, country, email, password, true)
+
+        // Asserting Message Container is Visible
+        await GenericMethods.assertion_ElementToBeVisible(BugForm_Elements.messageContainer)
+
+        // Asserting Error Message Text
+        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.messageContainer, errorMessage)
+
+    })
+
+    test('Bug Form - Submit Form Negative Test - With Invalid Email', async ({ BugForm_Actions, BugForm_Elements, GenericMethods, page }) => {
+
+        // Test Data
+        const firstName = 'John'
+        const lastName = 'Doe'
+        const phoneNumber = '12345678901'
+        const country = 'Brazil'
+        const email = 'johnemailwithout'
+        const password = 'Password123'
+
+        // Completing the form and submitting
+        await BugForm_Actions.SubmitBugForm(firstName, lastName, phoneNumber, country, email, password, true)
+
+        // Asserting Message Container is Not Visible
+        await GenericMethods.assertion_ElementToNotBeVisible(BugForm_Elements.messageContainer)
+
+    })
+
+    test('Bug Form - Submit Form Negative Test - With All Fields Empty', async ({ BugForm_Actions, BugForm_Elements, GenericMethods, page }) => {
+
+        // Test Data
+        const errorMessage = 'The password should contain between [6,20] characters!'
+        const defaultCountry = 'Select a country...'
+
+        // Completing the form and submitting
+        await BugForm_Actions.SubmitBugForm('', '', '', defaultCountry, '', '', true)
+
+        // Asserting Message Container is Not Visible
+        await GenericMethods.assertion_ElementToBeVisible(BugForm_Elements.messageContainer)
+
+        // Asserting Error Message Text
+        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.messageContainer, errorMessage)
+
+    })
+
+    test('Bug Form - Submit Form Negative Test - Passoword with over 20 characters', async ({ BugForm_Actions, BugForm_Elements, GenericMethods, page }) => {
+
+        // Test Data
+        const password = '123456789012345678901' // 21 characters
+
+        // Fill password with 21 characters
+        await GenericMethods.fillInputWithValue(BugForm_Elements.inputPassword, password)
+
+        // Retrieving input value
+        const inputValue = await GenericMethods.getInputValueFromElement(BugForm_Elements.inputPassword)
+
+        // Asserting input value length is not more than 20 characters
+        await GenericMethods.assertion_ValueToBe(inputValue.length <= 20, true)
+
+    })
+
+    test('Bug Form - Submit Form Negative Test - Phone Number with less than 10 characters', async ({ BugForm_Actions, BugForm_Elements, GenericMethods, page }) => {
+
+        // Test Data
+        const firstName = 'John'
+        const lastName = 'Doe'
+        const phoneNumber = '123456789' // 9 characters
+        const country = 'Brazil'
+        const email = 'john@doe.com'
+        const password = 'Password123'
+        const successMessage = 'The phone number should contain at least 10 characters!'
+
+        // Completing the form and submitting
+        await BugForm_Actions.SubmitBugForm(firstName, lastName, phoneNumber, country, email, password, true)
+
+        // Asserting container is Visible
+        await GenericMethods.assertion_ElementToBeVisible(BugForm_Elements.messageContainer)
+
+        // Asserting Error Message Text
+        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.messageContainer, successMessage)
 
     })
 
@@ -152,168 +410,5 @@ test.describe('Bugs Form', () => {
         await GenericMethods.assertion_ElementToNotBeVisible(BugForm_Elements.resultsSectionContainer)
 
     })
-
-    test('Bug Form - Submit Form and Validate Results', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
-
-        // Test Data
-        const firstName = 'John'
-        const lastName = 'Doe'
-        const phoneNumber = '1234567890'
-        const country = 'Brazil'
-        const email = 'john@doe.com'
-        const password = 'Password123'
-        const successMessage = 'Successfully registered the following information'
-
-        // Completing the form and submitting
-        await BugForm_Actions.SubmitBugForm(firstName, lastName, phoneNumber, country, email, password, true)
-
-        // Asserting Success Message is Visible
-        await GenericMethods.assertion_ElementToBeVisible(BugForm_Elements.messageContainer)
-
-        // Asserting Success Message Text
-        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.messageContainer, successMessage)
-
-        // Asserting Results Section is Visible
-        await GenericMethods.assertion_ElementToBeVisible(BugForm_Elements.resultsSectionContainer)
-
-        // Asserting Result First Name
-        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.resultFirstName, firstName)
-
-        // Asserting Result Last Name
-        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.resultLastName, lastName)
-
-        // Asserting Result Phone Number
-        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.resultPhoneNumber, phoneNumber)
-
-        // Asserting Result Country
-        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.resultCountry, country)
-
-        // Asserting Result Email
-        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.resultEmail, email)
-
-    })
-
-    test('Bug Form - Submit Form Negative Test - Without Mandatory Last Name', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
-
-        // Test Data
-        const firstName = 'John'
-        const phoneNumber = '1234567890'
-        const country = 'Brazil'
-        const email = 'john@doe.com'
-        const password = 'Password123'
-        const successMessage = 'Successfully registered the following information'
-
-        // Completing the form and submitting
-        await BugForm_Actions.SubmitBugForm(firstName, '', phoneNumber, country, email, password, true)
-
-        // Asserting Success Message is not Visible
-        await GenericMethods.assertion_ElementToNotBeVisible(BugForm_Elements.messageContainer)
-
-        // Asserting Success Message Text is not Visible
-        await GenericMethods.assertion_TextToNotBePresentInElement(BugForm_Elements.messageContainer, successMessage)
-
-        // Asserting Results Section is not Visible
-        await GenericMethods.assertion_ElementToNotBeVisible(BugForm_Elements.resultsSectionContainer)
-
-    })
-
-    test('Bug Form - Submit Form Negative Test - Without Mandatory Phone Number', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
-
-        // Test Data
-        const firstName = 'John'
-        const lastName = 'Doe'
-        const country = 'Brazil'
-        const email = 'john@doe.com'
-        const password = 'Password123'
-        const errorMessage = 'The phone number should contain at least 10 characters!'
-
-        // Completing the form and submitting
-        await BugForm_Actions.SubmitBugForm(firstName, lastName, '', country, email, password, true)
-
-        // Asserting Message Container is Visible
-        await GenericMethods.assertion_ElementToBeVisible(BugForm_Elements.messageContainer)
-
-        // Asserting Error Message Text
-        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.messageContainer, errorMessage)
-
-    })
-
-    test('Bug Form - Submit Form Negative Test - Without Mandatory Email', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
-
-        // Test Data
-        const firstName = 'John'
-        const lastName = 'Doe'
-        const country = 'Brazil'
-        const phoneNumber = '1234567890'
-        const password = 'Password123'
-        const errorMessage = 'The phone number should contain at least 10 characters!'
-
-        // Completing the form and submitting
-        await BugForm_Actions.SubmitBugForm(firstName, lastName, phoneNumber, country, '', password, true)
-
-        // Asserting Message Container is Visible
-        await GenericMethods.assertion_ElementToBeVisible(BugForm_Elements.messageContainer)
-
-        // Asserting Error Message Text
-        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.messageContainer, errorMessage)
-    })
-
-    test('Bug Form - Submit Form Negative Test - Without Mandatory Password', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
-
-        // Test Data
-        const firstName = 'John'
-        const lastName = 'Doe'
-        const phoneNumber = '1234567890'
-        const country = 'Brazil'
-        const email = 'john@doe.com'
-        const errorMessage = 'The password should contain between [6,20] characters!'
-
-        // Completing the form and submitting
-        await BugForm_Actions.SubmitBugForm(firstName, lastName, phoneNumber, country, email, '', true)
-
-        // Asserting Message Container is Visible
-        await GenericMethods.assertion_ElementToBeVisible(BugForm_Elements.messageContainer)
-
-        // Asserting Error Message Text
-        await GenericMethods.assertion_TextToBePresentInElement(BugForm_Elements.messageContainer, errorMessage)
-
-    })
-
-    test('Bug Form - Submit Form Negative Test - Without Accepting Terms and Conditions', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
-
-        const firstName = 'John'
-        const lastName = 'Doe'
-        const phoneNumber = '1234567890'
-        const country = 'Brazil'
-        const email = 'john@doe.com'
-        const password = 'Password123'
-        const successMessage = 'Successfully registered the following information'
-
-        // Completing the form and submitting without accepting terms and conditions
-        await BugForm_Actions.SubmitBugForm(firstName, lastName, phoneNumber, country, email, password, false)
-
-        // Asserting Success Message Text is not Visible
-        await GenericMethods.assertion_TextToNotBePresentInElement(BugForm_Elements.messageContainer, successMessage)
-
-    })
-
-    test.skip('Bug Form - Submit Form Negative Test - With Invalid Phone Number', async ({ BugForm_Actions, BugForm_Elements, GenericMethods, page }) => {
-
-    })
-
-    test.skip('Bug Form - Submit Form Negative Test - With Invalid Password', async ({ BugForm_Actions, BugForm_Elements, GenericMethods, page }) => {
-
-    })
-
-    test.skip('Bug Form - Submit Form Negative Test - With Invalid Email', async ({ BugForm_Actions, BugForm_Elements, GenericMethods, page }) => {
-
-    })
-
-    test.skip('Bug Form - Submit Form Negative Test - With All Fields Empty', async ({ BugForm_Actions, BugForm_Elements, GenericMethods, page }) => {
-
-    })
-
-
-
 
 })

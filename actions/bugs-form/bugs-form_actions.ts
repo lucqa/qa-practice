@@ -16,6 +16,8 @@ export class BugForm_Actions {
         // Mandatory
 
     }
+
+    // Action to Submit Bug Form
     async SubmitBugForm(firstName: string, lastName: string, phoneNumber: string, country: string, email: string, password: string, terms: boolean) {
 
         // Filling First Name

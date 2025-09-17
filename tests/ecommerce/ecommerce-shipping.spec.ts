@@ -59,10 +59,10 @@ test.describe("commerce: Shipping Form Tests", () => {
         const expectedAttributeValue = 'color: red;'
 
         // Fill in Street
-        await GenericMethods.fill(authEcommerce_elements.streetFormInput, authEcommerce_elements.placeholderShippingDetails.street)
+        await GenericMethods.fillInputWithValue(authEcommerce_elements.streetFormInput, authEcommerce_elements.placeholderShippingDetails.street)
 
         // Fill in City
-        await GenericMethods.fill(authEcommerce_elements.cityFormInput, authEcommerce_elements.placeholderShippingDetails.city)
+        await GenericMethods.fillInputWithValue(authEcommerce_elements.cityFormInput, authEcommerce_elements.placeholderShippingDetails.city)
 
         // Select in Country
         await GenericMethods.selectOptionByValue(authEcommerce_elements.countryFormSelect, authEcommerce_elements.placeholderShippingDetails.country)
@@ -82,10 +82,10 @@ test.describe("commerce: Shipping Form Tests", () => {
         const expectedAttributeValue = 'color: red;'
 
         // Fill in Phone Number
-        await GenericMethods.fill(authEcommerce_elements.phoneNumberInput, authEcommerce_elements.placeholderShippingDetails.phone)
+        await GenericMethods.fillInputWithValue(authEcommerce_elements.phoneNumberInput, authEcommerce_elements.placeholderShippingDetails.phone)
 
         // Fill in City
-        await GenericMethods.fill(authEcommerce_elements.cityFormInput, authEcommerce_elements.placeholderShippingDetails.city)
+        await GenericMethods.fillInputWithValue(authEcommerce_elements.cityFormInput, authEcommerce_elements.placeholderShippingDetails.city)
 
         // Select in Country
         await GenericMethods.selectOptionByValue(authEcommerce_elements.countryFormSelect, authEcommerce_elements.placeholderShippingDetails.country)
@@ -105,10 +105,10 @@ test.describe("commerce: Shipping Form Tests", () => {
         const expectedAttributeValue = 'color: red;'
 
         // Fill in Street
-        await GenericMethods.fill(authEcommerce_elements.streetFormInput, authEcommerce_elements.placeholderShippingDetails.street)
+        await GenericMethods.fillInputWithValue(authEcommerce_elements.streetFormInput, authEcommerce_elements.placeholderShippingDetails.street)
 
         // Fill in Phoe Number
-        await GenericMethods.fill(authEcommerce_elements.phoneNumberInput, authEcommerce_elements.placeholderShippingDetails.phone)
+        await GenericMethods.fillInputWithValue(authEcommerce_elements.phoneNumberInput, authEcommerce_elements.placeholderShippingDetails.phone)
 
         // Select in Country
         await GenericMethods.selectOptionByValue(authEcommerce_elements.countryFormSelect, authEcommerce_elements.placeholderShippingDetails.country)
@@ -128,13 +128,13 @@ test.describe("commerce: Shipping Form Tests", () => {
         const expectedAttributeValue = 'color: red;'
 
         // Fill in Phnoe Number
-        await GenericMethods.fill(authEcommerce_elements.phoneNumberInput, authEcommerce_elements.placeholderShippingDetails.phone)
+        await GenericMethods.fillInputWithValue(authEcommerce_elements.phoneNumberInput, authEcommerce_elements.placeholderShippingDetails.phone)
 
         // Fill in Street
-        await GenericMethods.fill(authEcommerce_elements.streetFormInput, authEcommerce_elements.placeholderShippingDetails.street)
+        await GenericMethods.fillInputWithValue(authEcommerce_elements.streetFormInput, authEcommerce_elements.placeholderShippingDetails.street)
 
         // Fill in City
-        await GenericMethods.fill(authEcommerce_elements.cityFormInput, authEcommerce_elements.placeholderShippingDetails.city)
+        await GenericMethods.fillInputWithValue(authEcommerce_elements.cityFormInput, authEcommerce_elements.placeholderShippingDetails.city)
 
         // Click Submit Order
         await GenericMethods.clickOn(authEcommerce_elements.submitOrderButton)
@@ -147,13 +147,13 @@ test.describe("commerce: Shipping Form Tests", () => {
     test('Complete an Order: All Fields Fullfiled', async ({ GenericMethods, authEcommerce_elements }) => {
 
         // Fill in Phnoe Number
-        await GenericMethods.fill(authEcommerce_elements.phoneNumberInput, authEcommerce_elements.placeholderShippingDetails.phone)
+        await GenericMethods.fillInputWithValue(authEcommerce_elements.phoneNumberInput, authEcommerce_elements.placeholderShippingDetails.phone)
 
         // Fill in Street
-        await GenericMethods.fill(authEcommerce_elements.streetFormInput, authEcommerce_elements.placeholderShippingDetails.street)
+        await GenericMethods.fillInputWithValue(authEcommerce_elements.streetFormInput, authEcommerce_elements.placeholderShippingDetails.street)
 
         // Fill in City
-        await GenericMethods.fill(authEcommerce_elements.cityFormInput, authEcommerce_elements.placeholderShippingDetails.city)
+        await GenericMethods.fillInputWithValue(authEcommerce_elements.cityFormInput, authEcommerce_elements.placeholderShippingDetails.city)
 
         // Select in Country
         await GenericMethods.selectOptionByValue(authEcommerce_elements.countryFormSelect, authEcommerce_elements.placeholderShippingDetails.country)

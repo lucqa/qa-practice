@@ -56,7 +56,7 @@ export class GenericMethods {
     }
 
     // Action to Fill an input
-    async fill(element: Locator, value: string) {
+    async fillInputWithValue(element: Locator, value: string) {
         await element.fill(value)
     }
 
