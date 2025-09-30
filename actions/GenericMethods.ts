@@ -8,6 +8,7 @@ export class GenericMethods {
     constructor(page: Page) {
 
         this.page = page
+        // Mandatory
 
     }
 
@@ -46,6 +47,21 @@ export class GenericMethods {
     // Text not present in element
     async assertion_TextToNotBePresentInElement(element: Locator, text: string) {
         await expect.soft(element).not.toContainText(text)
+    }
+
+    // Checkbox is Checked
+    async assertion_CheckboxIsChecked(element: Locator) {
+        await expect.soft(element).toBeChecked()
+    }
+
+    // Checkbox is Not Checked
+    async assertion_CheckboxIsNotChecked(element: Locator) {
+        await expect.soft(element).not.toBeChecked()
+    }
+
+    // Element is disabled
+    async assertion_ElementIsDisabled(element: Locator) {
+        await expect.soft(element).toBeDisabled()
     }
 
     ///////////////////////////////////////// Generic Actions
