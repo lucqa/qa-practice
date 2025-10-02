@@ -61,4 +61,6 @@ This is a simple practice project for web automation testing.
 > npx playwright test --project=firefox
 11. To run in headed mode add --headed
 > npx playwright test --project=chromium --headed
+12. To open last HTML report run:
+> npx playwright show-report
 ## This is a WIP.

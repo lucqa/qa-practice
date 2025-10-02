@@ -12,7 +12,7 @@ test.describe('Bugs Form', () => {
 
     })
 
-    test.skip('Bug Form - Submit Form and Validate Results', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
+    test('Bug Form - Submit Form and Validate Results', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
 
         // Test Data
         const firstName = 'John'
@@ -52,7 +52,7 @@ test.describe('Bugs Form', () => {
 
     })
 
-    test.skip('Bug Form - Submit Form Negative Test - Without Mandatory Last Name', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
+    test('Bug Form - Submit Form Negative Test - Without Mandatory Last Name', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
 
         // Test Data
         const firstName = 'John'
@@ -97,7 +97,7 @@ test.describe('Bugs Form', () => {
 
     })
 
-    test.skip('Bug Form - Submit Form Negative Test - Without Mandatory Email', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
+    test('Bug Form - Submit Form Negative Test - Without Mandatory Email', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
 
         // Test Data
         const firstName = 'John'
@@ -139,7 +139,7 @@ test.describe('Bugs Form', () => {
 
     })
 
-    test.skip('Bug Form - Submit Form Negative Test - Without Accepting Terms and Conditions', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
+    test('Bug Form - Submit Form Negative Test - Without Accepting Terms and Conditions', async ({ BugForm_Actions, BugForm_Elements, GenericMethods }) => {
 
         const firstName = 'John'
         const lastName = 'Doe'
@@ -157,7 +157,7 @@ test.describe('Bugs Form', () => {
 
     })
 
-    test.skip('Bug Form - Submit Form Negative Test - With Invalid Phone Number', async ({ BugForm_Actions, BugForm_Elements, GenericMethods, page }) => {
+    test('Bug Form - Submit Form Negative Test - With Invalid Phone Number', async ({ BugForm_Actions, BugForm_Elements, GenericMethods, page }) => {
 
         // Test Data
         const firstName = 'John'
@@ -197,7 +197,7 @@ test.describe('Bugs Form', () => {
 
     })
 
-    test.skip('Bug Form - Submit Form Negative Test - With Invalid Email', async ({ BugForm_Actions, BugForm_Elements, GenericMethods, page }) => {
+    test('Bug Form - Submit Form Negative Test - With Invalid Email', async ({ BugForm_Actions, BugForm_Elements, GenericMethods, page }) => {
 
         // Test Data
         const firstName = 'John'
@@ -232,7 +232,7 @@ test.describe('Bugs Form', () => {
 
     })
 
-    test.skip('Bug Form - Submit Form Negative Test - Passoword with over 20 characters', async ({ BugForm_Actions, BugForm_Elements, GenericMethods, page }) => {
+    test('Bug Form - Submit Form Negative Test - Passoword with over 20 characters', async ({ BugForm_Actions, BugForm_Elements, GenericMethods, page }) => {
 
         // Test Data
         const password = '123456789012345678901' // 21 characters
@@ -270,7 +270,7 @@ test.describe('Bugs Form', () => {
 
     })
 
-    test.skip('Bug Form - UI Validation', async ({ BugForm_Elements, GenericMethods }) => {
+    test('Bug Form - UI Validation', async ({ BugForm_Elements, GenericMethods }) => {
 
         // Test Data
         const expectedTitleHeader = 'CHALLENGE - Spot the BUGS!'
