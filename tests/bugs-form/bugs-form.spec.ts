@@ -2,13 +2,13 @@ import { test } from 'my-test'
 
 test.describe('Bugs Form', () => {
 
-    test.beforeEach(async ({ page }) => {
+    test.beforeEach(async ({ GenericMethods }) => {
 
         // Calling Page Name
         const pageName = 'bugs-form'
 
         // Loading Page
-        await page.goto(pageName)
+        await GenericMethods.navigateToUrl(pageName)
 
     })
 
