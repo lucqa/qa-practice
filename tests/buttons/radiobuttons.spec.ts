@@ -2,13 +2,13 @@ import { test } from 'my-test'
 
 test.describe("Buttons and Checkboxes Tests", () => {
 
-    test.beforeEach('Precondition: Navigate to Buttons/Checkboxes Page', async ({ page }) => {
+    test.beforeEach('Precondition: Navigate to Buttons/Checkboxes Page', async ({ GenericMethods }) => {
 
         // Calling Page Name
         const pageName = 'radiobuttons'
 
         // Loading Page
-        await page.goto(pageName)
+        await GenericMethods.navigateToUrl(pageName)
 
     })
 

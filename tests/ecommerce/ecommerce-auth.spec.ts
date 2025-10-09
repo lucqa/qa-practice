@@ -2,13 +2,13 @@ import { test } from "my-test"
 
 test.describe("Ecommerce: Authentication Tests", () => {
 
-    test.beforeEach('Precondition: Call E-commerce endpoint', async ({ page }) => {
+    test.beforeEach('Precondition: Call E-commerce endpoint', async ({ GenericMethods }) => {
 
         // Calling Page Name
         const pageName = 'auth_ecommerce'
 
         // Loading Page
-        await page.goto(pageName)
+        await GenericMethods.navigateToUrl(pageName)
 
     })
 

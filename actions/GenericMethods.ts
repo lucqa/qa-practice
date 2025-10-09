@@ -86,4 +86,9 @@ export class GenericMethods {
         const textFromElement = await element.inputValue()
         return textFromElement
     } 
+
+    // Action to navigate to a URL
+    async navigateToUrl(url: string) {
+        await this.page.goto(url)
+    }
 }
